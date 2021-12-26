@@ -1,10 +1,12 @@
 import asyncio
-import pip
+import sys
+sys.path.append("C:\Python38\Lib\site-packages")
 
 from pywizlight import wizlight, PilotBuilder, discovery
 
 async def main():
     """Sample code to work with bulbs."""
+    print(f"Testing Code for _lights.py")
     # Discover all bulbs in the network via broadcast datagram (UDP)
     # function takes the discovery object and returns a list with wizlight objects.
     bulbs = await discovery.discover_lights(broadcast_space="192.168.1.255")
