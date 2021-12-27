@@ -3,11 +3,32 @@ import asyncio
 import sys
 import os
 from pathlib import Path
+import json
 
 
-# Currently Fixing .env and .kbve files for Python.
+def json_extract(obj, key):
+    """Recursively fetch values from nested JSON."""
+    arr = []
 
-sys.path.append("C:\Python38\Lib\site-packages")
+    def extract(obj, arr, key):
+        """Recursively search for values of key in JSON tree."""
+        if isinstance(obj, dict):
+            for k, v in obj.items():
+                if isinstance(v, (dict, list)):
+                    extract(v, arr, key)
+                elif k == key:
+                    arr.append(v)
+        elif isinstance(obj, list):
+            for item in obj:
+                extract(item, arr, key)
+        return arr
+
+    values = extract(obj, arr, key)
+    return values
+
+# Load System Path for Python Libs
+_data = json.load(open('../../../kbve.json'))
+sys.path.append(json_extract(_data['var'], 'PYTHON_3_PATH'))
 
 from pywizlight import wizlight, PilotBuilder, discovery
 
@@ -37,7 +58,10 @@ async def main():
     if "-off" in command:
         bulbs = await discovery.discover_lights(broadcast_space="192.168.1.255")
         for bulb in bulbs: light = await wizlight(bulb.ip).turn_off()
-    
+
+    if "-warm" in command:
+        bulbs = await discovery.discover_lights(broadcast_space="192.168.1.255")
+        for bulb in bulbs: light = await wizlight(bulb.ip).turn_on(PilotBuilder(warm_white = 25))
 
         
 
