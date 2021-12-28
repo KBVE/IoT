@@ -6,6 +6,7 @@ from pathlib import Path
 import json
 
 
+#Extract Nested Values from a JSON Tree - HackersAndSlackers.com 
 def json_extract(obj, key):
     """Recursively fetch values from nested JSON."""
     arr = []
@@ -30,6 +31,7 @@ def json_extract(obj, key):
 _data = json.load(open('../../../kbve.json'))
 sys.path.append(json_extract(_data['var'], 'PYTHON_3_PATH'))
 
+
 from pywizlight import wizlight, PilotBuilder, discovery
 
 
@@ -41,10 +43,22 @@ from pywizlight import wizlight, PilotBuilder, discovery
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 async def hex_to_rgb(hexvalue):
     hexvalue = hexvalue.lstrip("-#")
     hexvalue = tuple(int(hexvalue[i:i+2], 16) for i in (0, 2, 4))
-    print(hexvalue)
     return hexvalue
 
 # Code Based Upon Sbidy's Example
@@ -61,7 +75,7 @@ async def main():
 
     if "-warm" in command:
         bulbs = await discovery.discover_lights(broadcast_space="192.168.1.255")
-        for bulb in bulbs: light = await wizlight(bulb.ip).turn_on(PilotBuilder(warm_white = 25))
+        for bulb in bulbs: light = await wizlight(bulb.ip).turn_on(PilotBuilder(warm_white = 255))
 
         
 
