@@ -2,6 +2,7 @@
     "var": [
     {
       "kbve_id": "61ca44e93fbac458a8c5d089",
+      "PYTHONPATH" : "C:\/Python\/",
       "PYTHON_3_PATH": "C:\/Python38\/Lib\/site-packages",
       "PYTHON_310_PATH": "c:\/users\/user\/appdata\/local\/programs\/python\/python310\/lib",
       "_error": "Error JSON FILE",
