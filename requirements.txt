@@ -1,2 +1,3 @@
 pywizlight
 selenium
+undetected-chromedriver
