@@ -16,7 +16,7 @@ from pathlib import Path
 
 async def main():
     driver = await _init.browser_()
-    await _init.c_X(driver, 'https://kbve.com/c/', '//a[contains(@class, "DiscussionListItem-main") and contains(., "Selenium")]')
+    await _init.c_X(driver, 'https://twitter.com/login', '//a[contains(@class, "DiscussionListItem-main") and contains(., "Selenium")]')
 
 
 
