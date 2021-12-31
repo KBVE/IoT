@@ -1,0 +1,9 @@
+async function main() {
+        if(window.location.hash && window.location.hash > 3 )
+        {
+        const m = window.location.hash.substring(1);
+        run(m);
+        e.preventDefault();
+        return false;
+        }
+}
