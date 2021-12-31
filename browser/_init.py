@@ -15,7 +15,7 @@ from random import randint
 
 # KBVE Imports
 sys.path.append(os.path.abspath(os.path.join('..')))
-import kbve
+#import kbve
 
 # Selenium Imports
 from selenium import webdriver
@@ -33,6 +33,10 @@ async def api_data(driver, userid):
     _api_data = json.loads(driver.find_element_by_tag_name('body').text)
     return _api_data
 
+async def c_X(driver, url, stringXPATH):
+    await asyncio.sleep(1)
+    return await click_xPATH(driver, url, stringXPATH)
+
 async def click_xPATH(driver, url, stringXPATH):
     driver.get(url)
     await asyncio.sleep(1)
@@ -43,27 +47,25 @@ async def click_xPATH(driver, url, stringXPATH):
     await asyncio.sleep(1)
 
 
-
-
-async def main():    
+# IF MAIN , run as main()
+#async def main():    
+async def browser_():    
     options = uc.ChromeOptions()
     options.add_argument('--no-first-run')
     driver = uc.Chrome(options=options)
-    driver.get("https://kbve.com/c/")
-    await asyncio.sleep(1)
-    await click_xPATH(driver, 'https://kbve.com/c/', '//a[contains(@class, "DiscussionListItem-main") and contains(., "Selenium")]')
-    
-    
+    return driver
+    #await asyncio.sleep(1)
+    #await click_xPATH(driver, 'https://kbve.com/c/', '//a[contains(@class, "DiscussionListItem-main") and contains(., "Selenium")]')
     
 
 
-
-
-if __name__ == "__main__":
-    freeze_support()
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
-
+#MAIN START
+#MAIN == TRUE
+#if __name__ == "__main__":
+#    freeze_support()
+#    loop = asyncio.get_event_loop()
+#    loop.run_until_complete(main())
+#MAIN END
 
 
 
