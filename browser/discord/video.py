@@ -14,11 +14,16 @@ from multiprocessing import Process, freeze_support
 import threading
 from pathlib import Path
 
+#Import PyAutoGUI
+import pyautogui
+
+
 # Restructing the loop. I am just messing around and learning.
+# pyMoTW Tutorial on Asyncio Tasks. Going to build off their template. 
 
 async def wrapped():
     print('wrapped')
-    return 'result'
+    return 'result' 
 
 
 async def inner(task):
