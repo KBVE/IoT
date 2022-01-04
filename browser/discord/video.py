@@ -39,7 +39,8 @@ async def starter():
     print('starter: waiting for inner')
     await inner(task)
     print('starter: inner returned')
-
+    x, y = pyautogui.locateCenterOnScreen('image1.png')
+    pyautogui.click(x, y)
 
 event_loop = asyncio.get_event_loop()
 try:
