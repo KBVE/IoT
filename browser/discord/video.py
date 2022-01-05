@@ -21,6 +21,16 @@ import pyautogui
 # Restructing the loop. I am just messing around and learning.
 # pyMoTW Tutorial on Asyncio Tasks. Going to build off their template. 
 
+#
+import base64
+def image_to_data_url(filename):
+    ext = filename.split('.')[-1]
+    prefix = f'data:image/{ext};base64,'
+    with open(filename, 'rb') as f:
+        img = f.read()
+    return prefix + base64.b64encode(img).decode('utf-8')
+
+
 async def wrapped():
     print('wrapped')
     return 'result' 
