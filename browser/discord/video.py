@@ -49,7 +49,7 @@ async def starter():
     print('starter: waiting for inner')
     await inner(task)
     print('starter: inner returned')
-    x, y = pyautogui.locateCenterOnScreen('image1.png')
+    x, y = pyautogui.locateCenterOnScreen('../../media/images/brave_browser.png')
     pyautogui.click(x, y)
     ## Executing this on server alpha
 

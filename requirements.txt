@@ -2,3 +2,4 @@ pywizlight
 selenium
 undetected-chromedriver
 pyautogui
+Pillow
