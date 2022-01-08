@@ -33,8 +33,10 @@ def image_to_data_url(filename):
 
 async def pyag_click(image_path):
     x, y = pyautogui.locateCenterOnScreen(image_path)
+    await asyncio.sleep(1)
     pyautogui.click(x, y)
-
+    await asyncio.sleep(1)
+    return 'result'
 
 async def wrapped():
     print('wrapped')
@@ -50,11 +52,14 @@ async def inner(task):
 
 async def starter():
     print('starter: creating task')
-    task = asyncio.ensure_future(wrapped())
+    task = asyncio.create_task(wrapped())
     print('starter: waiting for inner')
     await inner(task)
     ## ../../media/images/brave_browser.png
-    task1 = asyncio.ensure_future(pyag_click('../../media/images/brave_browser.png'))
+    task1 = asyncio.create_task(
+        pyag_click('../../media/images/brave_browser.png')
+        )
+
     await inner(task1)
     print('starter: inner returned')
 
