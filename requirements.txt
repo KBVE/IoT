@@ -3,3 +3,4 @@ selenium
 undetected-chromedriver
 pyautogui
 Pillow
+opencv-python
