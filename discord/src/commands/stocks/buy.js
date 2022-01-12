@@ -9,7 +9,6 @@ const { Collection , MessageEmbed } = require('discord.js');
 
 
 
-
 class BuyCommand extends Command {
     constructor(context, options) {
         super(context, {
@@ -29,13 +28,15 @@ class BuyCommand extends Command {
 
 
     async chatInputRun(interaction) {
+
         const type = interaction.options.getSubcommand(true);
         const name = interaction.options.getString('name');
+
         const embed = new MessageEmbed()
             .setColor(0xfee75c)
-            .setDescription('**Ping?** Please wait...');
+            .setDescription('**Buying?** Please wait...');
 
-        const message = await interaction.reply({
+        await interaction.reply({
             embeds: [embed],
             fetchReply: true
         });
