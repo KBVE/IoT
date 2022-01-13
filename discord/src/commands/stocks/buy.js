@@ -29,12 +29,12 @@ class BuyCommand extends Command {
 
     async chatInputRun(interaction) {
 
-        const type = interaction.options.getSubcommand(true);
-        const name = interaction.options.getString('name');
-
+        //const type = interaction.options.getSubcommand(true);
+        const stock = interaction.options.getString('stock');
+        const amount = interaction.options.getString('amount');
         const embed = new MessageEmbed()
             .setColor(0xfee75c)
-            .setDescription('**Buying?** Please wait...');
+            .setDescription(`**Buying ${amount} of ${stock}** Please wait...`);
 
         await interaction.reply({
             embeds: [embed],
@@ -42,7 +42,7 @@ class BuyCommand extends Command {
         });
         embed
             .setColor(0x57f287)
-            .setDescription(`⏱️ Type: ${type}ms\n⌛ Latency: ${name}ms`);
+            .setDescription(`⏱️ Type: ${stock}ms\n⌛ Latency: ${name}ms`);
 
         await interaction.editReply({ embeds: [embed] });
     }
