@@ -40,13 +40,9 @@ class BuyCommand extends Command {
             embeds: [embed],
             fetchReply: true
         });
-
-        const ping = interaction.client.ws.ping;
-        const latency = Date.now() - message.createdTimestamp;
-
         embed
             .setColor(0x57f287)
-            .setDescription(`⏱️ Ping: ${ping}ms\n⌛ Latency: ${latency}ms`);
+            .setDescription(`⏱️ Type: ${type}ms\n⌛ Latency: ${name}ms`);
 
         await interaction.editReply({ embeds: [embed] });
     }
