@@ -42,15 +42,10 @@ class FundCommand extends Command {
         });
 
         switch (type) {
-            case 'piece':
-                const pieces = new Collection().concat(
-                    ...this.container.stores.values()
-                );
-                const piece = pieces.get(name);
-                timer.start();
-                await piece.reload();
-                break;
-            case 'store':
+            case 'buy':
+               
+
+            case 'd':
                 const store = this.container.stores.get(name);
                 timer.start();
                 await store.loadAll();
