@@ -3,7 +3,7 @@ const { Command, RegisterBehavior } = require('@sapphire/framework');
 // Slash Command Builder
 const { SlashCommandBuilder } = require('@discordjs/builders');
 // Python Script Integration
-const { spawn } = require('child_process');
+const { spawn } = require('child_process').spawn;
 
 class LightsCommand extends Command {
 
@@ -55,7 +55,7 @@ class LightsCommand extends Command {
             const latency = Date.now() - message.createdTimestamp;
             
             const pyProg = spawn('python', ['./../home/lights/wiz/_lights.py', hex]);
-
+            console.log(pyProg)
             pyProg.stdout.on('data', function(data) {
         
                 console.log(data.toString());
