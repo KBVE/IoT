@@ -29,9 +29,12 @@ class FundCommand extends Command {
 
     async chatInputRun(interaction) {
 
+        // 
         const type = interaction.options.getSubcommand(true);
         const stock = interaction.options.getString('stock');
         const amount = interaction.options.getString('amount');
+
+
         const embed = new MessageEmbed()
             .setColor(0xfee75c)
             .setDescription(`**Buying ${amount} of ${stock}** Please wait...`);

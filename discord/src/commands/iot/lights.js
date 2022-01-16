@@ -2,8 +2,14 @@ const { MessageEmbed } = require('discord.js');
 const { Command, RegisterBehavior } = require('@sapphire/framework');
 // Slash Command Builder
 const { SlashCommandBuilder } = require('@discordjs/builders');
+// Python Script Integration
+const { spawn } = require('child_process');
 
 class LightsCommand extends Command {
+
+    // Constructor for the command.
+    // START [Constructor]
+    // information: "lights" {Name of the command}
     constructor(context, options) {
         super(context, {
             ...options,
@@ -17,6 +23,7 @@ class LightsCommand extends Command {
             }
         });
     }
+    // END [Constructor]
 
     async chatInputRun(interaction) {
         const embed = new MessageEmbed()
@@ -28,18 +35,40 @@ class LightsCommand extends Command {
             fetchReply: true
         });
 
-        
+        var reg=/^#([0-9a-f]{3}){1,2}$/i;
         const type = interaction.options.getSubcommand(true);
         const hex = interaction.options.getString('hex');
-        console.log(hex);
-        const ping = interaction.client.ws.ping;
-        const latency = Date.now() - message.createdTimestamp;
 
-        embed
-            .setColor(0x57f287)
-            .setDescription(`💡 Light Color: ${hex}ms\n⌛ Latency: ${latency}ms`);
+        if(!reg.test(hex))
+        {
+            embed
+            .setColor(0xff0000)
+            .setDescription(`Not a valid Hex Code`);
 
-        await interaction.editReply({ embeds: [embed] });
+            await interaction.editReply({ embeds: [embed] });
+        }
+        else{
+            // Test if hex passes through. We want to make sure that we check the safety of the string as well.
+            // Sanitizing the string again, just to ensure that we are operating at a safe level. 
+            console.log(hex);
+            const ping = interaction.client.ws.ping;
+            const latency = Date.now() - message.createdTimestamp;
+            
+           /* const pyProg = spawn('python', ['./../pypy.py']);
+
+            pyProg.stdout.on('data', function(data) {
+        
+                console.log(data.toString());
+                res.write(data);
+                res.end('end');
+            });
+            */
+            embed
+                .setColor(0x57f287)
+                .setDescription(`💡 Light Color: ${hex}\n⌛ Latency: ${latency}ms`);
+
+            await interaction.editReply({ embeds: [embed] });
+        }
     }
 
     // Auto Complete Function
@@ -66,6 +95,8 @@ class LightsCommand extends Command {
                 .filter(option => !query.trim() || option.name.includes(query))
         );
     }
+
+    
 
     
     registerApplicationCommands(registry) {
