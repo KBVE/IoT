@@ -54,7 +54,7 @@ class LightsCommand extends Command {
             const ping = interaction.client.ws.ping;
             const latency = Date.now() - message.createdTimestamp;
             
-           /* const pyProg = spawn('python', ['./../pypy.py']);
+            const pyProg = spawn('python', ['./../home/lights/wiz/_lights.py', hex]);
 
             pyProg.stdout.on('data', function(data) {
         
@@ -62,7 +62,7 @@ class LightsCommand extends Command {
                 res.write(data);
                 res.end('end');
             });
-            */
+            
             embed
                 .setColor(0x57f287)
                 .setDescription(`💡 Light Color: ${hex}\n⌛ Latency: ${latency}ms`);
