@@ -30,17 +30,19 @@ class LightsCommand extends Command {
 
         
         const type = interaction.options.getSubcommand(true);
-        const name = interaction.options.getString('hex');
-        console.log(light_color);
+        const hex = interaction.options.getString('hex');
+        console.log(hex);
         const ping = interaction.client.ws.ping;
         const latency = Date.now() - message.createdTimestamp;
 
         embed
             .setColor(0x57f287)
-            .setDescription(`⏱️ Light Color: ${light_color}ms\n⌛ Latency: ${latency}ms`);
+            .setDescription(`💡 Light Color: ${hex}ms\n⌛ Latency: ${latency}ms`);
 
         await interaction.editReply({ embeds: [embed] });
     }
+
+    // Auto Complete Function
 
     autocompleteRun(interaction) {
         const type = interaction.options.getSubcommand(true);
@@ -73,11 +75,11 @@ class LightsCommand extends Command {
             .addSubcommand(subcommand =>
                 subcommand
                     .setName('hex')
-                    .setDescription('Reload a piece of code')
+                    .setDescription('Hex Color of the Lights')
                     .addStringOption(option =>
                         option
                             .setName('hex')
-                            .setDescription('The name of the piece to reload')
+                            .setDescription('The name of the hex color to use') 
                             .setRequired(true)
                     )
             );
