@@ -6,7 +6,7 @@ class InfoCommand extends Command {
     constructor(context, options) {
         super(context, {
             ...options,
-            name: 'infokbve',
+            name: 'info',
             description: 'Returns bot information and statistics',
             chatInputCommand: {
                 register: true,

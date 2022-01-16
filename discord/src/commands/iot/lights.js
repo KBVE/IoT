@@ -19,13 +19,16 @@ class LightsCommand extends Command {
     async chatInputRun(interaction) {
         const embed = new MessageEmbed()
             .setColor(0xfee75c)
-            .setDescription('**Processing Lights.py** Please wait...');
+            .setDescription('**Processing Lights.py** Please wait...')
+            .addStringOption(option => option.setName('hex').setDescription('Enter a HexCode'));
 
         const message = await interaction.reply({
             embeds: [embed],
             fetchReply: true
         });
-        let light_color = interaction.options.get("color");
+
+
+        let light_color = interaction.options.getString('hex');
         console.log(light_color);
         const ping = interaction.client.ws.ping;
         const latency = Date.now() - message.createdTimestamp;
