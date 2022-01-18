@@ -29,6 +29,6 @@
         "envalid": "^7.2.2",
         "node-fetch": "^2.6.6",
         "paster.js": "^1.0.0",
-        "python-shell": "^3.0.1"
+        "pythonia": "^0.2.14"
     }
 }

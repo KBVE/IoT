@@ -3,7 +3,11 @@ const { Command, RegisterBehavior } = require('@sapphire/framework');
 // Slash Command Builder
 const { SlashCommandBuilder } = require('@discordjs/builders');
 // Python Script Integration
-const { spawn } = require('child_process');
+//const { PythonShell } = require('python-shell').PythonShell;
+//import {py, PyClass, python} from 'pythonia'    
+const { py, PyClass, python } = require('pythonia');
+// Going from Javascript, to Python, back to Javascript then to TypeScript. Why? Migration to TypeScript would be easier! :C
+//import { PythonShell } from 'python-shell';
 
 class LightsCommand extends Command {
 
@@ -54,13 +58,22 @@ class LightsCommand extends Command {
             const ping = interaction.client.ws.ping;
             const latency = Date.now() - message.createdTimestamp;
             
-            const pyProg = spawn('python', ['./../home/lights/wiz/_light.py', hex]);
+            //                                                          [Dead Code] const tk = await python('tkinter')
+            //                                                          [Dead Code] const root = await tk.Tk()
+            
+            //      const _discovery = await python('pywizlight.discovery');
+            //      (Returns -> <module 'pywizlight.discovery' from 'C:\\Python\\lib\\site-packages\\pywizlight\\discovery.py'>)
 
-            pyProg.stdout.on('data', function(data) {
-        
-                console.log(data.toString());
+            //      const bulbs = await _discovery.discover_lights(`broadcast_space="192.168.1.255"`);
+            //      (Returns -> <coroutine object discover_lights at 0x0000023F99F4F1B0>)
+            
+            //                                                          [Dead Code] const script = await python('./../home/lights/wiz/_lights.py');
 
-            });
+            
+            console.log(bulbs);
+            
+            // Make sure to kill Python, to avoid memory usage.
+            python.exit();
             
             embed
                 .setColor(0x57f287)
