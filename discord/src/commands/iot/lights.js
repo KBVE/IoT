@@ -90,7 +90,7 @@ class LightsCommand extends Command {
         const query = interaction.options.getFocused();
 
         const options =
-            type === 'piece'
+            type === 'lights_ex'
                 ? new Collection()
                       .concat(...this.container.stores.values())
                       .filter(
