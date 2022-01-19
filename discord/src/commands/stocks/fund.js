@@ -49,14 +49,21 @@ class FundCommand extends Command {
 
         const type = interaction.options.getSubcommand(true);
         const stock = interaction.options.getString('stock');
-        const amount = interaction.options.getString('amount');
+        const amount = interaction.options.getString('amount').replace('K','000').replace(',','');
 
 
         switch (type) {
             case 'buy':
+                    if(!isNaN(amount)) {
+                        embed
+                        .setColor(0xFF0000)
+                        .setDescription(`Amount is not a valid number`);
+                        await interaction.editReply({ embeds: [embed] });            
+                        break;  
+                    }
                 embed
                 .setColor(0x57f287)
-                .setDescription(`⏱️ Buying Stock: ${stock}ms\n⌛ Amount: ${amount} kredits`);
+                .setDescription(`📈 Buying Stock: ${stock} Ticker\n💸 Amount: ${amount} credits`);
                 await interaction.editReply({ embeds: [embed] });            
                 break; 
             //
