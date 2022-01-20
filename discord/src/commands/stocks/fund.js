@@ -40,7 +40,6 @@ class FundCommand extends Command {
             console.log("Grabbing Robinhood Data");
             return new Promise(function (res, rej) {
                // if(!_ticker) rej('Missing Ticker');    
-               console.log(env.ROBINHOOD_TOKEN);          
                 var _RH = rh({token : env.ROBINHOOD_TOKEN }, function(){})
 
                 _RH.accounts(function(error, response, body) {
@@ -61,7 +60,72 @@ class FundCommand extends Command {
 
     }
 
+    robinhood_data(_ticker)
+    {
+        return new Promise(function (res, rej) {
+            if(!_ticker) rej('Missing Ticker');              
+            const _RH = rh({token : env.ROBINHOOD_TOKEN }, function(){})
+            _RH.quote_data(_ticker, function(error, response, body) {
+               if (error) { rej(error); }
+               var _data = body;
+               res(_data);
+               })
+            
+        });           
+        
+    }
 
+
+    async _rh_data(_ticker)
+    {
+        let _rh = await this.robinhood_data(_ticker);
+        return await _rh;
+
+    }
+
+
+    robinhood_buy_data(_ticker, _url, _price , _shares)
+        {
+            return new Promise(function (res, rej) {
+                if(!_ticker) rej('Missing Ticker');          
+               
+                
+              
+                const _RH = rh({token : env.ROBINHOOD_TOKEN }, function(){
+                    let options = {
+                        type: 'market',
+                        quantity: _shares,
+                        bid_price: _price,
+                        instrument: {
+                            url: _url,
+                            symbol: _ticker
+                        }
+                    // time: String,    // Defaults to "immediate"
+                    // type: String     // Defaults to "market"
+                    }
+                    _RH.place_buy_order(options, function(error, response, body){
+                        if (error) { rej(error); }
+                        var _data = body;
+                        console.log(_data)
+                        res(_data);
+                        })
+                })
+                
+                    
+               // _RH.accounts(function(error, response, body) {
+                   
+                
+            });           
+            
+        }
+
+
+    async _rh_buy(_ticker, _url, _price , _shares)
+    {
+        let _rh = await this.robinhood_buy_data(_ticker, _url, _price , _shares);
+        return await _rh;
+
+    }
 
 
 // [0] Async Break down for the chatInputRun
@@ -89,7 +153,7 @@ class FundCommand extends Command {
             case 'buy':
                     const stock = interaction.options.getString('stock');
                     const amount = interaction.options.getString('amount').replace('K','000').replace(',','');
-              
+                    const _amount = amount;
             
                     if(isNaN(amount)) {
                         embed
@@ -107,6 +171,14 @@ class FundCommand extends Command {
                         await interaction.editReply({ embeds: [embed] });            
                         break;  
                     }
+                    const _ticker = stock.replaceAll('$','').substr(0, 5);
+                    let price = await(this._rh_data(_ticker))
+                    if(price == null || price.results == null) { return message.channel.send(`\`ERROR\` \`\`\`xl\n${'Error with the pricing, yall trying to rob the hood?'}\n\`\`\``) }
+                    let _price = await price.results[0].ask_price
+                    let _url = await price.results[0].instrument
+                    let _shares = (_amount / _price ).toFixed(4)
+            
+                    let buy_data = await this._rh_buy(_ticker, _url, _price, _shares);
 
 
 
@@ -115,15 +187,13 @@ class FundCommand extends Command {
 
                 embed
                 .setColor(0x57f287)
-                .setDescription(`📈 Buying Stock: ${stock} Ticker\n💸 Amount: ${amount} credits`);
+                .setDescription(`📈 Buying Stock: ${stock} Ticker\n💸 Amount: ${amount} credits \n  Share Units: ${_shares} \n`);
                 await interaction.editReply({ embeds: [embed] });            
                 break; 
             //
             case 'igbc':
 
                 let data = await this._rh_fund_data();
-                console.log(data);
-
                     if(typeof data.detail !== 'undefined') {
                         embed
                             .setColor(0xFF0000)
