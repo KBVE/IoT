@@ -8,6 +8,9 @@ const env = cleanEnv(process.env, {
     }),
     GUILD_ID: str({
         desc: 'The ID of the guild to use for development (slash commands are updated instantly for this guild)'
+    }),
+    ROBINHOOD_TOKEN: str({
+        desc: 'The Token of the Robinhood Account'
     })
 });
 

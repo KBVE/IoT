@@ -6,6 +6,12 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const { Stopwatch } = require('@sapphire/stopwatch');
 // Message
 const { Collection , MessageEmbed } = require('discord.js');
+// Env
+const { env } = require('../.././config');
+// Robinhood
+const rh  = require('robinhood');
+const { Body } = require('node-fetch');
+
 
 
 // Glue Code Warning - 
@@ -28,6 +34,36 @@ class FundCommand extends Command {
         });
     }
 
+
+    robinhood_fund_data()
+        {   
+            console.log("Grabbing Robinhood Data");
+            return new Promise(function (res, rej) {
+               // if(!_ticker) rej('Missing Ticker');    
+               console.log(env.ROBINHOOD_TOKEN);          
+                var _RH = rh({token : env.ROBINHOOD_TOKEN }, function(){})
+
+                _RH.accounts(function(error, response, body) {
+                   if (error) { rej(error); }
+                   var _data = body;
+                   res(_data);
+                   })
+                
+            });           
+            
+        }
+
+
+    async _rh_fund_data()
+    {
+        let _rh = await this.robinhood_fund_data();
+        return await _rh;
+
+    }
+
+
+
+
 // [0] Async Break down for the chatInputRun
 // Check #kbve discord for the new template. 
 
@@ -48,19 +84,35 @@ class FundCommand extends Command {
 
 
         const type = interaction.options.getSubcommand(true);
-        const stock = interaction.options.getString('stock');
-        const amount = interaction.options.getString('amount').replace('K','000').replace(',','');
-
-
+      
         switch (type) {
             case 'buy':
-                    if(!isNaN(amount)) {
+                    const stock = interaction.options.getString('stock');
+                    const amount = interaction.options.getString('amount').replace('K','000').replace(',','');
+              
+            
+                    if(isNaN(amount)) {
                         embed
-                        .setColor(0xFF0000)
-                        .setDescription(`Amount is not a valid number`);
+                            .setColor(0xFF0000)
+                            .setDescription(`Amount is not a valid number`);
                         await interaction.editReply({ embeds: [embed] });            
                         break;  
                     }
+
+                    if(stock.length > 5)
+                    {
+                        embed
+                            .setColor(0xFF0000)
+                            .setDescription(`Stock Ticker is too long`);
+                        await interaction.editReply({ embeds: [embed] });            
+                        break;  
+                    }
+
+
+
+
+
+
                 embed
                 .setColor(0x57f287)
                 .setDescription(`📈 Buying Stock: ${stock} Ticker\n💸 Amount: ${amount} credits`);
@@ -68,6 +120,24 @@ class FundCommand extends Command {
                 break; 
             //
             case 'igbc':
+
+                let data = await this._rh_fund_data();
+                console.log(data);
+
+                    if(typeof data.detail !== 'undefined') {
+                        embed
+                            .setColor(0xFF0000)
+                            .setDescription(`Error: ${data.detail}`);
+                        await interaction.editReply({ embeds: [embed] });            
+                        break;  
+                    }
+
+                embed
+                .setColor(0x57f287)
+                .setDescription(`📈 Fund Cash $: ${data.results[0].cash} USD \n 💸 Withdrawal: ${data.results[0].cash_available_for_withdrawal} USD`);
+                await interaction.editReply({ embeds: [embed] });            
+
+
                 break;
             ///\
             case 'd':
@@ -143,7 +213,14 @@ class FundCommand extends Command {
                             .setDescription('The amount of credits for the ticker') 
                             .setRequired(true)
                     )
+            )
+            .addSubcommand(subcommand =>
+                        subcommand
+                            .setName('igbc')
+                            .setDescription('InterGalactic Banking Clan')
+                           
             );
+            
           
 
         registry.registerChatInputCommand(command, {
