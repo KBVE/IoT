@@ -34,14 +34,11 @@ class FundCommand extends Command {
         });
     }
 
-
     robinhood_fund_data()
         {   
             console.log("Grabbing Robinhood Data");
             return new Promise(function (res, rej) {
-               // if(!_ticker) rej('Missing Ticker');    
                 var _RH = rh({token : env.ROBINHOOD_TOKEN }, function(){})
-
                 _RH.accounts(function(error, response, body) {
                    if (error) { rej(error); }
                    var _data = body;
@@ -171,9 +168,18 @@ class FundCommand extends Command {
                         await interaction.editReply({ embeds: [embed] });            
                         break;  
                     }
+
                     const _ticker = stock.replaceAll('$','').substr(0, 5);
+                    
                     let price = await(this._rh_data(_ticker))
-                    if(price == null || price.results == null) { return message.channel.send(`\`ERROR\` \`\`\`xl\n${'Error with the pricing, yall trying to rob the hood?'}\n\`\`\``) }
+                    if (price == null || price.results == null) { 
+                        embed
+                        .setColor(0xFF0000)
+                        .setDescription(`Error with the pricing, yall trying to rob the hood?`);
+                            await interaction.editReply({ embeds: [embed] });            
+                            break;  
+                        
+                        }
                     let _price = await price.results[0].ask_price
                     let _url = await price.results[0].instrument
                     let _shares = (_amount / _price ).toFixed(4)
@@ -187,7 +193,7 @@ class FundCommand extends Command {
 
                 embed
                 .setColor(0x57f287)
-                .setDescription(`📈 Buying Stock: ${stock} Ticker\n💸 Amount: ${amount} credits \n  Share Units: ${_shares} \n`);
+                .setDescription(`📈 Buying Stock: ${stock} Ticker\n💸 Amount: ${amount} credits \n  Share Units: ${_shares} \n `);
                 await interaction.editReply({ embeds: [embed] });            
                 break; 
             //
@@ -202,15 +208,23 @@ class FundCommand extends Command {
                         break;  
                     }
 
+                console.log(data);
+
                 embed
                 .setColor(0x57f287)
-                .setDescription(`📈 Fund Cash $: ${data.results[0].cash} USD \n 💸 Withdrawal: ${data.results[0].cash_available_for_withdrawal} USD`);
+                .setDescription(`📈 Fund CashFlow $: ${data.results[0].cash} USD \n 💸 Withdrawal $: ${data.results[0].cash_available_for_withdrawal} USD \n 💰 RustyClan Lannister Debt $: ${data.results[0].unsettled_debit} 
+                \n 🐖 Piggy Pank $: ${data.results[0].cash_held_for_orders} \n ❤️‍🔥 Cash Held $: ${data.results[0].cash_held_for_options_collateral}  \n 🪙 Crypto ₿uyin Power $: ${data.results[0].crypto_buying_power} `);
                 await interaction.editReply({ embeds: [embed] });            
 
 
                 break;
             ///\
-            case 'd':
+            case 'stock':
+                const _stock = interaction.options.getString('stock');
+                const _pticker = _stock.replaceAll('$','').substr(0, 5);
+                
+                
+
                 //_[DEAD] Dead Glue Code from Sapphire, only here for test casing.
                 //                          const store = this.container.stores.get(name);
                 //                          timer.start();
