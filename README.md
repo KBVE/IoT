@@ -8,12 +8,14 @@ Oh man the amount of resources / credits that I will have to go.
 
 Logs: I will go back and update them as I get time.
 
+1/32/2022
+- Conradical#4688 For the Memes.
 
-3/20/2022
+1/20/2022
 - Fudster#4458 for test casing.
 - Oskar Codes from Dev.To for the quick webhooks
 
-3/19/2022
+1/19/2022
 - Rusty Shakelford#2644 (Discord) for Emoji / Command help and test casing!
 - DagoRed#6936 (Discord) for Proxmox integration. Still WIP. 
 
