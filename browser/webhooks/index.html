@@ -1,0 +1,31 @@
+
+<!-- Source: https://dev.to/oskarcodes/send-automated-discord-messages-through-webhooks-using-javascript-1p01 -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Webhook from dev.to</title>
+  </head>
+  <body>
+    <button onclick="sendMessage()">Send</button>
+  </body>
+
+  <script>
+    function sendMessage() {
+      const request = new XMLHttpRequest();
+      var url = location.hash;
+      request.open("POST", url);
+
+      request.setRequestHeader('Content-type', 'application/json');
+
+      const params = {
+        username: "Can I run webhooks",
+        avatar_url: "",
+        content: "/fund igbc"
+      }
+
+      request.send(JSON.stringify(params));
+    }
+  </script>
+</html>

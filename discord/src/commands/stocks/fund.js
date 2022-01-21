@@ -26,7 +26,6 @@ class FundCommand extends Command {
             ...options,
             name: 'fund',
             description: 'KBVE Fund Bot',
-            preconditions: ['OwnerOnly'],
             chatInputCommand: {
                 register: true,
                 behaviorWhenNotIdentical: RegisterBehavior.Overwrite,
@@ -97,6 +96,9 @@ class FundCommand extends Command {
         const bonus = new MessageEmbed().setColor(0xfee75c).setDescription(`**Bonus Message!** Please wait...`);
         //_[END]
 
+        // Console Log
+        console.log(interaction.member.user.id);
+        
         const message = await interaction.reply({
             embeds: [embed,bonus],
             fetchReply: true
@@ -106,10 +108,11 @@ class FundCommand extends Command {
       
         switch (type) {
             case 'buy':
+
                     const stock = interaction.options.getString('stock');
                     const amount = interaction.options.getString('amount').replace('K','000').replace(',','');
                     const _amount = amount;
-            
+                    if(interaction.member.user.id != '121512134390579200') {                                 embed.setColor(0x0000FF).setDescription(`Only holy can ask me to buy!`);                        await interaction.editReply({ embeds: [embed] });       break; }
                     if(isNaN(amount)) {                                 embed.setColor(0xFF0000).setDescription(`Amount is not a valid number`);                        await interaction.editReply({ embeds: [embed] });       break; }
                     if(stock.length > 5) {                              embed.setColor(0xFF0000).setDescription(`Stock Ticker is too long`);                            await interaction.editReply({ embeds: [embed] });       break; }
 
@@ -204,30 +207,57 @@ class FundCommand extends Command {
                 const image = await nodeHtmlToImage({
                     quality: 100,
                     type: 'png',
-                    html: `<!-- TradingView Widget BEGIN -->
-                    <div class="tradingview-widget-container">
-                      <div class="tradingview-widget-container__widget"></div>
-                      <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/NASDAQ-AAPL/technicals/" rel="noopener" target="_blank"><span class="blue-text">Technical Analysis for </span></a> by TradingView</div>
-                      <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>
-                      {
-                      "interval": "1m",
-                      "width": 425,
-                      "isTransparent": false,
-                      "height": 450,
-                      "symbol": "NASDAQ:AAPL",
-                      "showIntervalTabs": false,
-                      "locale": "en",
-                      "colorTheme": "dark"
-                    }
-                      </script>
-                    </div>
-                    <!-- TradingView Widget END -->
+                    waitUntil: 'load',
+                    html: `
+                             <!DOCTYPE html>
+                                <html lang="en">
+                                <head>
+                                    <meta charset="UTF-8" />
+                                    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                                    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+                                    <style>
+                                    body {
+                                        font-family: "Poppins", Arial, Helvetica, sans-serif;
+                                        background: rgb(22, 22, 22);
+                                        color: #fff;
+                                        max-width: 300px;
+                                    }
+
+                                    .app {
+                                        max-width: 300px;
+                                        padding: 20px;
+                                        display: flex;
+                                        flex-direction: row;
+                                        border-top: 3px solid rgb(16, 180, 209);
+                                        background: rgb(31, 31, 31);
+                                        align-items: center;
+                                    }
+
+                                    img {
+                                        width: 50px;
+                                        height: 50px;
+                                        margin-right: 20px;
+                                        border-radius: 50%;
+                                        border: 1px solid #fff;
+                                        padding: 5px;
+                                    }
+                                    </style>
+                                </head>
+                                <body>
+                                    <div class="app">
+                                    <div style="height:560px; background-color: #1D2330; overflow:hidden; box-sizing: border-box; border: 1px solid #282E3B; border-radius: 4px; text-align: right; line-height:14px; font-size: 12px; font-feature-settings: normal; text-size-adjust: 100%; box-shadow: inset 0 -20px 0 0 #262B38;padding:1px;padding: 0px; margin: 0px; width: 100%;"><div style="height:540px; padding:0px; margin:0px; width: 100%;"><iframe src="https://widget.coinlib.io/widget?type=chart&theme=dark&coin_id=859&pref_coin_id=1505" width="100%" height="536px" scrolling="auto" marginwidth="0" marginheight="0" frameborder="0" border="0" style="border:0;margin:0;padding:0;line-height:14px;"></iframe></div><div style="color: #626B7F; line-height: 14px; font-weight: 400; font-size: 11px; box-sizing: border-box; padding: 2px 6px; width: 100%; font-family: Verdana, Tahoma, Arial, sans-serif;"><a href="https://coinlib.io" target="_blank" style="font-weight: 500; color: #626B7F; text-decoration:none; font-size:11px">Cryptocurrency Prices</a>&nbsp;by Coinlib</div></div>
+                                    </div>
+                                </body>
+                                </html>
                     `
                 });
-                const _chart = new MessageAttachment(images);
+                const _chart = new MessageAttachment(image, 'meme.png');
                 
-                //bonus.setColor(0x57f287).setImage(_chart);
-                await interaction.editReply({ embeds: [embed,bonus]});    
+                //bonus.setColor(0x57f287).setImage('attachment://meme.png');
+                await interaction.editReply({ 
+                    embeds: [embed,bonus],
+                    files: [_chart]
+                    });    
                 break;
              
             
