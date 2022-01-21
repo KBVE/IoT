@@ -14,7 +14,7 @@
   <script>
     function sendMessage() {
       const request = new XMLHttpRequest();
-      var url = location.hash;
+      var url = location.hash.substr(1);
       request.open("POST", url);
 
       request.setRequestHeader('Content-type', 'application/json');
