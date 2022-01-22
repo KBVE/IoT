@@ -76,7 +76,7 @@ class FundCommand extends Command {
                         _RH.place_buy_order(options, function(error, response, body){
                             if (error) { rej(error); }
                             var _data = body;
-                            console.log(_data)
+                            //console.log(_data)
                             res(_data);
                             })
                     })     
@@ -136,7 +136,16 @@ class FundCommand extends Command {
                 embed
                 .setColor(0x57f287)
                 .setDescription(`📈 Buying Stock: ${stock} Ticker\n💸 Amount: ${amount} credits \n  Share Units: ${_shares} \n `);
-                await interaction.editReply({ embeds: [embed] });            
+
+                bonus
+                .setColor(0x0000FF)
+                .setDescription(`Trade Block
+                \n Data:
+                \n Stock Price Execution: ${buy_data.results[0].price}               
+                \n Shares: ${buy_data.result[0].quantity}
+                \n Object: ${buy_data.result[0].instrument_id}
+                `)
+                await interaction.editReply({ embeds: [embed,bonus] });            
                 break; 
             //
             case 'igbc':
@@ -150,7 +159,7 @@ class FundCommand extends Command {
                         break;  
                     }
 
-                console.log(data);
+                //console.log(data);
 
                 embed
                 .setColor(0x57f287)
@@ -161,7 +170,10 @@ class FundCommand extends Command {
                 \n 🐖 Piggy Pending Pank $: ${data.results[0].cash_held_for_orders} 
                 \n ❤️‍🔥 Cash Held $: ${data.results[0].cash_held_for_options_collateral}  
                 \n 🪙 Crypto ₿uyin Power $: ${data.results[0].crypto_buying_power} `);
-                await interaction.editReply({ embeds: [embed] });            
+
+                if( Math.random() < 0.1 ) { bonus   .setColor(0x0000FF)  .setDescription(` InterGalatic Banking Clan, \n with the partnership of the Iron Bank of Braavos, \n thanks you for your service against *Black* Crack *Rock* Cocks.`);    }
+
+                await interaction.editReply(    { embeds: [embed,bonus] }   );            
 
 
                 break;
