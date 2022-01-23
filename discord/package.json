@@ -31,7 +31,7 @@
         "node-html-to-image": "^3.2.0",
         "paster.js": "^1.0.0",
         "pm2": "^5.1.2",
-        "pythonia": "^0.2.14",
+        "axios": "^0.25.0",
         "robinhood": "^1.8.0"
     }
 }

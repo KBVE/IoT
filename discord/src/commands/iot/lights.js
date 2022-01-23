@@ -5,9 +5,11 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 // Python Script Integration
 //const { PythonShell } = require('python-shell').PythonShell;
 //import {py, PyClass, python} from 'pythonia'    
-const { py, PyClass, python } = require('pythonia');
+//const { py, PyClass, python } = require('pythonia');
 // Going from Javascript, to Python, back to Javascript then to TypeScript. Why? Migration to TypeScript would be easier! :C
 //import { PythonShell } from 'python-shell';
+// Axios to Python Restful || Before we add in gRPC
+const axios = require('axios');
 
 class LightsCommand extends Command {
 
@@ -28,6 +30,21 @@ class LightsCommand extends Command {
         });
     }
     // END [Constructor]
+
+
+    // START [RESTful Request]
+    async _post(url,data) {
+        try {
+            const resp = await axios.post(url,data);
+            console.log(resp.data);
+            return resp.data;
+        } catch (err) {
+            // Handle Error Here
+            console.error(err);
+        }
+    };
+
+    // END [RESTful Request] Dummy Code
 
     async chatInputRun(interaction) {
         const embed = new MessageEmbed()
@@ -69,11 +86,22 @@ class LightsCommand extends Command {
             
             //                                                          [Dead Code] const script = await python('./../home/lights/wiz/_lights.py');
 
-            
-            console.log(bulbs);
-            
+            //const _discovery = await python(`pywizlight.discovery.discover_lights(broadcast_space="192.168.1.255")`);
+            //console.log(_discovery);
+            // gRPC vs RESTFul
+
+            // RESTFul via Axios (NodeJS) and Flask (Python)
+            const _lights_data = {
+                room: 1,
+                hex: hex,
+                command: 'all_light',
+                body: 'Change all the light colors to this hex'
+            };
+
+            this._post('http://localhost:9000',_lights_data);
+
             // Make sure to kill Python, to avoid memory usage.
-            python.exit();
+            //python.exit();
             
             embed
                 .setColor(0x57f287)
