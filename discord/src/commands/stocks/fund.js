@@ -13,6 +13,8 @@ const rh  = require('robinhood');
 const { Body } = require('node-fetch');
 // Node HTML to Image
 const nodeHtmlToImage = require('node-html-to-image');
+// Axios 
+const axios = require('axios');
 
 
 
@@ -34,6 +36,11 @@ class FundCommand extends Command {
             }
         });
     }
+
+    
+    
+ // https://github.com/KBVE/archive/blob/main/nodejs/_function/_axios_post.js   
+    async _post(url,data) {    try {   const resp = await axios.post(url,data);    return resp.data;   } catch (err) {     console.error(err);     return err;     }   };
 
     robinhood_fund_data()
             {   
@@ -108,13 +115,18 @@ class FundCommand extends Command {
       
         switch (type) {
             case 'buy':
-
+                    // TO-DO : Sanitize Input Parameters
+                    // TO-DO : Convert Credits to USD
                     const stock = interaction.options.getString('stock');
                     const amount = interaction.options.getString('amount').replace('K','000').replace(',','');
                     const _amount = amount;
                     if(interaction.member.user.id != '121512134390579200') {                                 embed.setColor(0x0000FF).setDescription(`Only holy can ask me to buy!`);                        await interaction.editReply({ embeds: [embed] });       break; }
                     if(isNaN(amount)) {                                 embed.setColor(0xFF0000).setDescription(`Amount is not a valid number`);                        await interaction.editReply({ embeds: [embed] });       break; }
                     if(stock.length > 5) {                              embed.setColor(0xFF0000).setDescription(`Stock Ticker is too long`);                            await interaction.editReply({ embeds: [embed] });       break; }
+
+                    // TO-DO: Executioner - interaction.member.user.id - has to have enough credits inside their account to execute the exchange.
+                    // TO-DO: Executioner - interaction.member.user.id - start pending transaction and remove the credits from their account.
+                    
 
                     const _ticker = stock.replaceAll('$','').substr(0, 5);
                 
@@ -125,7 +137,9 @@ class FundCommand extends Command {
                     let _price = await price.results[0].ask_price;
                     let _url = await price.results[0].instrument;
                     let _shares = (_amount / _price ).toFixed(4);
-            
+
+
+                    // TO-DO: Move the trade execution from within this application and migrate towards an isolated environment.
                     let buy_data = await this._rh_buy(_ticker, _url, _price, _shares);
 
                     console.log(buy_data);
@@ -266,6 +280,25 @@ class FundCommand extends Command {
                 const _chart = new MessageAttachment(image, 'meme.png');
                 
                 //bonus.setColor(0x57f287).setImage('attachment://meme.png');
+                await interaction.editReply({ 
+                    embeds: [embed,bonus],
+                    files: [_chart]
+                    });    
+                break;
+
+
+            case 'api': 
+                embed.setColor(0x57f287).setDescription(`API Call`);    
+
+                // API 
+                const image = await nodeHtmlToImage({
+                    quality: 100,
+                    type: 'png',
+                    waitUntil: 'load',
+                    html: ``
+                });
+                const _chart = new MessageAttachment(image, 'meme.png');
+            
                 await interaction.editReply({ 
                     embeds: [embed,bonus],
                     files: [_chart]
