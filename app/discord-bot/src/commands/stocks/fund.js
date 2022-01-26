@@ -104,7 +104,7 @@ class FundCommand extends Command {
         //_[END]
 
         // Console Log
-        console.log(interaction.member.user.id);
+        //console.log(interaction.member.user.id);
         
         const message = await interaction.reply({
             embeds: [embed,bonus],
@@ -177,8 +177,7 @@ class FundCommand extends Command {
 
                 embed
                 .setColor(0x57f287)
-                .setDescription(`📈 KBVE Fund 
-                \n Margin $: ${data.results[0].cash} USD
+                .setDescription(`📈 KBVE Fund \n Margin $: ${data.results[0].cash} USD
                 \n 💸 Cash $: ${data.results[0].cash_available_for_withdrawal} USD 
                 \n 💰 RustyClan Lannister Debt $: ${data.results[0].unsettled_debit} 
                 \n 🐖 Piggy Pending Pank $: ${data.results[0].cash_held_for_orders} 
@@ -291,17 +290,19 @@ class FundCommand extends Command {
                 embed.setColor(0x57f287).setDescription(`API Call`);    
 
                 // API 
-                const image = await nodeHtmlToImage({
+                // Two ways that we can do this, via Axios or via Fetch.
+                // Going to continue development on the slave-node-3 and slave-node-4, then repo for next update.
+                const api_image = await nodeHtmlToImage({
                     quality: 100,
                     type: 'png',
                     waitUntil: 'load',
                     html: ``
                 });
-                const _chart = new MessageAttachment(image, 'meme.png');
+                const api_chart = new MessageAttachment(api_image, 'meme.png');
             
                 await interaction.editReply({ 
                     embeds: [embed,bonus],
-                    files: [_chart]
+                    files: [api_chart]
                     });    
                 break;
              

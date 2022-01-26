@@ -16,7 +16,7 @@ class ReadyEvent extends Listener {
                 )} ${colors.green('is now ready!')}`
             )
         );
-
+        
         // Loaded stores
         this.container.logger.info(colors.bold(colors.green('Loaded:')));
         let stores = [...this.container.client.stores.values()]
