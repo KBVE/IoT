@@ -4,6 +4,10 @@ const { Constants } = require('discord.js');
 const { env } = require('./config');
 const colors = require('colorette');
 
+// Twitch Integration , which will expand into the Discord Bot Commands / Concepts. (In The Future)
+
+
+
 const logClientIn = async () => {
     const client = new SapphireClient({
         enableLoaderTraceLoggings: true,
@@ -17,11 +21,15 @@ const logClientIn = async () => {
         client.logger.info(
             colors.bold(colors.green('Successfully logged in...'))
         );
+  
+       
     } catch (error) {
         client.logger.fatal(error);
         client.destroy();
         process.exit(1);
     }
+    
+   
 };
 
 module.exports = {
