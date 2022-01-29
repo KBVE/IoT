@@ -4,8 +4,6 @@ const { Constants } = require('discord.js');
 const { env } = require('./config');
 const colors = require('colorette');
 
-// Twitch Integration , which will expand into the Discord Bot Commands / Concepts. (In The Future)
-
 
 
 const logClientIn = async () => {

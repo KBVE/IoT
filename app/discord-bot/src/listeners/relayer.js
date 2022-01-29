@@ -1,7 +1,7 @@
 const { Listener } = require('@sapphire/framework');                            // Event Listener
 const Filter = require('bad-words');                                            // Filter 
-const tmi = require('tmi.js');                                                  // TMI
-const { env } = require('../.././config');                                      // env file
+const { env } = require('.././config');                                         // env file
+const axios = require('axios');                                             // Axios HTTP
 
 class RelayerEvent extends Listener {
     
@@ -10,44 +10,54 @@ class RelayerEvent extends Listener {
 
     async _valid(vr_message)    { let clean_message;    try {   clean_message = new Filter().clean((vr_message));  } catch (error) {  console.log(error) }     return clean_message;   }
 
-    async _twitch(vr_author, vr_message)   {  
- 
-        const twitch_client = new tmi.Client({
-                options: { debug: true, messagesLogLevel: "info" },
-                connection: {
-                    reconnect: true,
-                    secure: true
-                },
-                identity: {
-                    username: 'kbve',
-                    password: env.TWITCH_BOT_TOKEN
-                },
-                channels: [ 'kbve' ]
-            });
-            twitch_client.connect().catch(console.error);
-            twitch_client.say(channel,`[Discord@${vr_author}] ${vr_message}`);
-            
+    
+    // https://github.com/KBVE/archive/blob/main/nodejs/_function/_axios_post.js   
+    async _post(url,data) {     let resp;   try {   resp = await axios.post(url,data);  } catch (err) {     return Promise.reject(err);   }     return resp;    };
 
-    }       
+
+
+
+    async _twitch(vr_author,vr_author_id, vr_message, vr_message_id, vr_channel)   {  
+        let _json_Object = JSON.stringify( `{ "_api_data": { "username": "${vr_author}", "message": "${vr_message}", "user_id" : "${vr_author_id}", "message_id" : "${vr_message_id}" }, "channel_id" : "${vr_channel}"}`);
+        console.log(_json_Object);    
+        try {   await this._post(env.TWITCH_HTTP_API, _json_Object);    }   catch (err) {     console.error(err);     return err;     }     
+            console.log('Sending HTTP Post to API');
+        }       
 
     async run(message) {
+
+        console.log(message)
+
         if(!message.author.id)                              {                                   return;     }   //  Null Check
         if(this.container.client.id == message.author.id)   {                                   return;     }   //  Ignore Messages from the bot.
-        if(message.webhookId)                               {       console.log(message);       return;     }   //  Ignore Webhooks
+        if(message.webhookId)                               {                                   return;     }   //  Ignore Webhooks
         if(!message.content)                                {                                   return;     }   //  Empty Content Message
-        
+        if(!message.channelId)                              {                                   return;     }   //  Empty Channel ID
+
         
         // Currently structuring the listener
 
-
-            let _a = message.author.id;
-            let _m; try { _m = await this._valid(message.content); } catch (error) {  console.log(error) }
-            this._twitch(_a,_m);
-            
+            let _c = message.channelId;
+            let _a_id = message.author.id;
+            let _a = message.author.username;
+            let _m_id = message.id;
+            let _m; try { _m = await this._valid(message.content);  }   catch (error)   {  console.log(error) }
            
+        // Debug if Relay Channel   
+            if(_c == env.DISCORD_TWITCH_RELAY_CHANNEL) {
+                let _final; try { _final = await this._twitch(_a, _a_id,  _m, _m_id, _c);   }   catch (error)   {  console.log(error)  }
+            }
+            
+            console.log('-------------------');
+            console.log('-------------------');
+            console.log(`Message :  ${_m}   `);
+            console.log(`Author  :  ${_a}   `);
+            console.log(`M ID    :  ${_m_id}`);
+            console.log(`A ID    :  ${_a_id}`);
+            console.log(`Channel :  ${_c}   `);
+            console.log('-------------------');
+            console.log('-------------------');
 
-            console.log(_m);
-            console.log(_a);
 
         // Twitch Relay
 
