@@ -32,15 +32,25 @@ class RelayerEvent extends Listener {
 
     async run(message) {
 
-        console.log(message)
+        //console.log(message);
+        let twitch_relay = true;
 
         if(!message.author.id)                              {                                   return;     }   //  Null Check
         if(this.container.client.id == message.author.id)   {                                   return;     }   //  Ignore Messages from the bot.
-        if(message.webhookId)                               {                                   return;     }   //  Ignore Webhooks
         if(!message.content)                                {                                   return;     }   //  Empty Content Message
         if(!message.channelId)                              {                                   return;     }   //  Empty Channel ID
 
         
+
+        if(message.webhookId)                               {   
+
+            let web_hook = message.webhookId;
+            let twitch_web_hook = env.TWITCH_DISCORD_WEBHOOK.substring(env.TWITCH_DISCORD_WEBHOOK.indexOf("webhooks/")+9,env.TWITCH_DISCORD_WEBHOOK.lastIndexOf("/")); 
+            if(web_hook == twitch_web_hook) { twitch_relay = false; }     
+                      
+                
+            } 
+
         // Currently structuring the listener
 
             let _c = message.channelId;
@@ -48,12 +58,11 @@ class RelayerEvent extends Listener {
             let _a = message.author.username;
             let _m_id = message.id;
             let _m; try { _m = await this._valid(message.content);  }   catch (error)   {  console.log(error) }
-           
-        // Debug if Relay Channel   
-            if(_c == env.DISCORD_TWITCH_RELAY_CHANNEL) {
+               // Debug if Relay Channel   
+            if((_c == env.DISCORD_TWITCH_RELAY_CHANNEL) && (twitch_relay)) {
                 let _final; try { _final = await this._twitch(_a, _a_id,  _m, _m_id, _c);   }   catch (error)   {  console.log(error)  }
             }
-            
+            /*
             console.log('-------------------');
             console.log('-------------------');
             console.log(`Message :  ${_m}   `);
@@ -64,7 +73,7 @@ class RelayerEvent extends Listener {
             console.log('-------------------');
             console.log('-------------------');
 
-
+            */
         // Twitch Relay
 
     }
