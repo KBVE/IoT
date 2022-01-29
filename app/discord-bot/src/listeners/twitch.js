@@ -1,19 +1,21 @@
-require('dotenv').config({ path: '../../.env' }); // Configuration for the environmental variables.
-//require('@sapphire/plugin-logger/register');  Plugin Ready State Removed. Will add it back it once everything is running smoothly.
+const { Listener } = require('@sapphire/framework');                            // Event Listener
+const Filter = require('bad-words');                                            // Filter 
+const { env } = require('.././config');                                         // env file
+const axios = require('axios');                                             // Axios HTTP
 const tmi = require('tmi.js');                                                                      //  TMI.js
-const axios = require('axios');                                                                     //  Axios
-const { env } = require('../../src/./config');                                                      //  env Config
 const Koa = require('koa');                                                                         //  Koa
 const router = require('@koa/router');
 const bodyParser = require('koa-bodyparser');
-//const jwt = require('koa-jwt')  No need to add JWT yet, will do after a couple test cases
-//const express = require('express');   Replacing Express with Koa.
-//const bodyParser = require('body-parser');
+
+class TwitchEvent extends Listener {
+    constructor(context, options) {
+        super(context, { ...options, once: true, event: `ready` });
+    }
 
 
-async function _post(url,data) {     let resp;   try {   resp = await axios.post(url,data);  } catch (err) {     return Promise.reject(err);   }     return resp;    };
+async  _post(url,data) {     let resp;   try {   resp = await axios.post(url,data);  } catch (err) {     return Promise.reject(err);   }     return resp;    };
 
-const twitch_api = async () => {
+async run() {
     
     const twitchClient = new tmi.Client({   options: { debug: true },   connection: { reconnect: true, secure: true },  identity: { username: env.TWITCH_USERNAME, password: env.TWITCH_BOT_TOKEN },    channels: [env.TWITCH_CHANNEL]  });
 
@@ -32,7 +34,7 @@ const twitch_api = async () => {
             content: message,
         };
 
-        _post(env.TWITCH_DISCORD_WEBHOOK,_j_Object);
+        this._post(env.TWITCH_DISCORD_WEBHOOK,_j_Object);
     }
     });
     const app = new Koa();  
@@ -47,13 +49,9 @@ const twitch_api = async () => {
     const http_app = app.listen(env.TWITCH_HTTP_API_PORT,   ()  =>  {           console.log(`Twitch API Server listening on port: ${env.TWITCH_HTTP_API_PORT}`);        });
 
 
+    }
 }
 
-
-
 module.exports = {
-    twitch_api
+    TwitchEvent
 };
-
-
-

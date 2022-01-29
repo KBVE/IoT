@@ -18,9 +18,15 @@ class RelayerEvent extends Listener {
 
 
     async _twitch(vr_author,vr_author_id, vr_message, vr_message_id, vr_channel)   {  
-        let _json_Object = JSON.stringify( `{ "_api_data": { "username": "${vr_author}", "message": "${vr_message}", "user_id" : "${vr_author_id}", "message_id" : "${vr_message_id}" }, "channel_id" : "${vr_channel}"}`);
-        console.log(_json_Object);    
-        try {   await this._post(env.TWITCH_HTTP_API, _json_Object);    }   catch (err) {     console.error(err);     return err;     }     
+
+        let _j_Object = {
+            username: vr_author,
+            message: vr_message,
+            user_id: vr_author_id,
+            message_id: vr_message_id,
+            channel_id: vr_channel
+        };
+        try {   await this._post(env.TWITCH_HTTP_API, _j_Object);    }   catch (err) {     console.error(err);     return err;     }     
             console.log('Sending HTTP Post to API');
         }       
 

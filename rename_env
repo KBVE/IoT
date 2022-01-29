@@ -7,6 +7,7 @@ TWITCH_BOT_TOKEN=oauth:null
 TWITCH_HTTP_API_PORT=1337
 TWITCH_HTTP_API=http://localhost:1337/twitch_api/
 TWITCH_CHANNEL=kbve
+TWITCH_DISCORD_WEBHOOK=https://discord.com/api/webhooks/9368199/gesge
 ROBINHOOD_TOKEN=eyJ_Null
 USERNAME=Test
 PASSWORD=Pass

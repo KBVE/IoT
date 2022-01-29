@@ -41,7 +41,7 @@ const twitch_api = async () => {
     app_router.post('/api/twitch_api', (ctx, next) => {   
         console.log(ctx);
         ctx.body = ctx.request.body;
-        twitchClient.say(env.TWITCH_CHANNEL, `[Discord@${ctx.body.username}] ${ctx.body.message}`);   
+       // twitchClient.say(env.TWITCH_CHANNEL, `[Discord@${ctx.body.username}] ${ctx.body.message}`);   
       });
     app.use(app_router.routes()).use(app_router.allowedMethods());
     const http_app = app.listen(env.TWITCH_HTTP_API_PORT,   ()  =>  {           console.log(`Twitch API Server listening on port: ${env.TWITCH_HTTP_API_PORT}`);        });
@@ -49,11 +49,12 @@ const twitch_api = async () => {
 
 }
 
+twitch_api();
 
-
+/*
 module.exports = {
     twitch_api
-};
+};*/
 
 
 

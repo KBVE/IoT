@@ -29,7 +29,12 @@ const env = cleanEnv(process.env, {
     }),
     TWITCH_CHANNEL: str({
         desc: 'The Twtich Channel location'
+    }),
+    TWITCH_DISCORD_WEBHOOK: str({
+        desc: 'The Twtich to Discord WebHook'
     })
+
+
 });
 
 module.exports = { env };
