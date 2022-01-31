@@ -40,7 +40,34 @@ class FundCommand extends Command {
     
     
  // https://github.com/KBVE/archive/blob/main/nodejs/_function/_axios_post.js   
-    async _post(url,data) {    try {   const resp = await axios.post(url,data);    return resp.data;   } catch (err) {     console.error(err);     return err;     }   };
+    async _post(url,data) {     let resp;   try {   resp = await axios.post(url,data);  } catch (err) {     return Promise.reject(err);   }     return resp;    };
+
+    // Transactions 
+    // https://github.com/flash-oss/medici
+    // Double Entry? Quadruple Entry!
+    
+    async _pre_balance()
+        {
+            let _j_Object = {
+                username: vr_author,
+                message: vr_message,
+                user_id: vr_author_id,
+                message_id: vr_message_id,
+                channel_id: vr_channel,
+                credit: vr_credit
+            };
+            
+            // Check if the user is registered within the system.  
+                let body;
+                let credit_restful;
+                // credit_restful = env.RESTFUL
+                try { body = await this._post(credit_restful, _j_Object);    }   catch (err) {     console.error(err);     return err;     }     
+                // if (body.failure) { return; }
+            
+                // _post(env. 
+                // 
+        }
+
 
     robinhood_fund_data()
             {   
