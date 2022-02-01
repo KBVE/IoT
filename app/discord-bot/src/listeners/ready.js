@@ -28,6 +28,7 @@ class ReadyEvent extends Listener {
                     )} ${colors.gray(store.name)}`
             );
         this.container.logger.info(stores.join('\n'));
+        
     }
 }
 

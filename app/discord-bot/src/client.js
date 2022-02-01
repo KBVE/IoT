@@ -9,7 +9,7 @@ const colors = require('colorette');
 const logClientIn = async () => {
     const client = new SapphireClient({
         enableLoaderTraceLoggings: true,
-        intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
+        intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildVoiceStates],
         partials: [Constants.PartialTypes.CHANNEL],
         disableMentions: 'everyone'
     });

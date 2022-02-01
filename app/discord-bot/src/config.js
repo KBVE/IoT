@@ -9,6 +9,9 @@ const env = cleanEnv(process.env, {
     GUILD_ID: str({
         desc: 'The ID of the guild to use for development (slash commands are updated instantly for this guild)'
     }),
+    DISCORD_VOICE_CHANNEL_ID: str({
+        desc: 'The ID of the Voice Channel to use for music and voice commands ()'
+    }),
     DISCORD_TWITCH_RELAY_CHANNEL: str({
         desc: 'The Discord <-> Twitch Relay Channel'
     }),

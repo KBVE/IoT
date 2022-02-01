@@ -14,20 +14,9 @@ class RelayerEvent extends Listener {
     // https://github.com/KBVE/archive/blob/main/nodejs/_function/_axios_post.js   
     async _post(url,data) {     let resp;   try {   resp = await axios.post(url,data);  } catch (err) {     return Promise.reject(err);   }     return resp;    };
 
-
-
-
     async _twitch(vr_author,vr_author_id, vr_message, vr_message_id, vr_channel)   {  
-
-        let _j_Object = {
-            username: vr_author,
-            message: vr_message,
-            user_id: vr_author_id,
-            message_id: vr_message_id,
-            channel_id: vr_channel
-        };
-        try {   await this._post(env.TWITCH_HTTP_API, _j_Object);    }   catch (err) {     console.error(err);     return err;     }     
-            console.log('Sending HTTP Post to API');
+                let _j_Object = {   username: vr_author,    message: vr_message,    user_id: vr_author_id,  message_id: vr_message_id,  channel_id: vr_channel  };
+                try {   await this._post(env.TWITCH_HTTP_API, _j_Object);    }   catch (err) {     console.error(err);     return err;     }     
         }       
 
     async run(message) {
@@ -41,16 +30,16 @@ class RelayerEvent extends Listener {
         if(!message.channelId)                              {                                   return;     }   //  Empty Channel ID
 
         
-
+        //_[START] WebHook Handling - Avoiding double messages.
         if(message.webhookId)                               {   
 
-            let web_hook = message.webhookId;
+            let web_hook = message.webhookId;   
             let twitch_web_hook = env.TWITCH_DISCORD_WEBHOOK.substring(env.TWITCH_DISCORD_WEBHOOK.indexOf("webhooks/")+9,env.TWITCH_DISCORD_WEBHOOK.lastIndexOf("/")); 
-            if(web_hook == twitch_web_hook) { twitch_relay = false; }     
+                if(web_hook == twitch_web_hook) { twitch_relay = false; }     
                       
-                
             } 
-
+        //_[END]
+        
         // Currently structuring the listener
 
             let _c = message.channelId;
@@ -74,7 +63,7 @@ class RelayerEvent extends Listener {
             console.log('-------------------');
 
             */
-        // Twitch Relay
+        // Relayer Completed 
 
     }
 }
