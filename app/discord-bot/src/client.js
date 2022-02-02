@@ -15,17 +15,13 @@ const logClientIn = async () => {
     });
 
     try {
-        await client.login(env.DISCORD_BOT_TOKEN);
-        client.logger.info(
-            colors.bold(colors.green('Successfully logged in...'))
-        );
-  
-       
-    } catch (error) {
-        client.logger.fatal(error);
-        client.destroy();
-        process.exit(1);
-    }
+            await client.login(env.DISCORD_BOT_TOKEN);
+            client.logger.info(colors.bold(colors.green('Successfully logged in...')));  
+        } catch (error) {
+            client.logger.fatal(error);
+            client.destroy();
+            process.exit(1);
+        }
     
    
 };
