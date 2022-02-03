@@ -1,11 +1,8 @@
 require('@sapphire/plugin-logger/register');                                    //  Plugin Register
 const { Listener } = require('@sapphire/framework');                            //  Event Listener
-const { VoiceState, ClientVoiceManager, VoiceChannel  } = require('discord.js');
 const { env } = require('.././config');                                         //  env file
 const colors = require('colorette');                                            //  colors
-const { VoiceConnection, joinVoiceChannel, DiscordGatewayAdapterCreator } = require('@discordjs/voice');
-const { GatewayVoiceServerUpdateDispatchData, GatewayVoiceStateUpdateDispatchData } = require('discord-api-types/v9');
-
+const { VoiceConnection, joinVoiceChannel } = require('@discordjs/voice');      //  Discord voice
 
 // Env Vars
 //  env.DISCORD_VOICE_CHANNEL_ID, env.GUILD_ID
@@ -18,7 +15,7 @@ class VoiceEvent extends Listener {
                                 const { client } = this.container;
                                 try {
                                         const connection = joinVoiceChannel({   channelId:  env.DISCORD_VOICE_CHANNEL_ID,   guildId: env.GUILD_ID,  selfDeaf: false,    selfMute: false,    adapterCreator: client.channels.cache.get(env.DISCORD_VOICE_CHANNEL_ID).guild.voiceAdapterCreator,  });
-                                        client.channels.cache.get('733340260196417566').send('!play https://soundcloud.com/closetomonday/together')
+                                        client.channels.cache.get(env.DISCORD_BOTSPAM_ID).send('Online!');
                                         client.logger.info(colors.bold(colors.green('Voice Event executed ...')));
                                     } catch (error) { 
                                         console.log(error);

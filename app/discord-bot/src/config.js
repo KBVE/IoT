@@ -12,6 +12,9 @@ const env = cleanEnv(process.env, {
     DISCORD_VOICE_CHANNEL_ID: str({
         desc: 'The ID of the Voice Channel to use for music and voice commands ()'
     }),
+    DISCORD_BOTSPAM_ID: str({
+        desc: 'The ID of the Voice Channel to use for music and voice commands ()'
+    }),
     DISCORD_TWITCH_RELAY_CHANNEL: str({
         desc: 'The Discord <-> Twitch Relay Channel'
     }),
