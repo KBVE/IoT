@@ -12,8 +12,8 @@ class BaseEvent extends Listener {
                 constructor(context, options)               {
                             super(context, { ...options, once: true, event: `ready` }); }   // Get Events Information from https://github.com/KBVE/archive/blob/main/txt/app/discord/discord_events_2022.txt
                         
-                            async _good(_log)           {const { client } = this.container;  client.logger.info(colors.bold(colors.green(`${_log}`)));}
-                            async _bad(_log)            {const { client } = this.container;  client.logger.error(colors.bold(colors.red(`${_log}`)));}
+                            async _good(_log)               {   const { client } = this.container;  client.logger.info(colors.bold(colors.green(`${_log}`)));}
+                            async _bad(_log)                {   const { client } = this.container;  client.logger.error(colors.bold(colors.red(`${_log}`)));}
 
                             async btc_price()               {
                                             const btc_url = "https://blockchain.info/ticker";
@@ -32,12 +32,12 @@ class BaseEvent extends Listener {
 
                 
                 
-                    }
+                }
 
 
 module.exports = {
     BaseEvent
-};
+};  
 
 
 

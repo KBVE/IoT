@@ -1,21 +1,22 @@
 {
-    "name": "discord-bot-template",
-    "version": "1.0.0",
-    "description": "A template for creating discord bots",
+    "name": "kbve-discord-iot-bot",
+    "version": "1.1.0",
+    "description": "KBVE IoT Discord Bot",
     "main": "src/index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "production": "node ./src/index.js"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/plexidev/discord-bot-template.git"
+        "url": "git+https://github.com/kbve/iot.git"
     },
-    "author": "",
+    "author": "plexidev, h0lybyte, {KBVE Devs}, vx-u, {Sapphire Devs}",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/plexidev/discord-bot-template/issues"
+        "url": "https://github.com/kbve/iot/issues"
     },
-    "homepage": "https://github.com/plexidev/discord-bot-template#readme",
+    "homepage": "https://kbve.com/iot/",
     "dependencies": {
         "@discordjs/voice": "^0.8.0",
         "@koa/router": "^10.1.1",
