@@ -15,7 +15,6 @@ class VoiceEvent extends Listener {
                                 const { client } = this.container;
                                 try {
                                         const connection = joinVoiceChannel({   channelId:  env.DISCORD_VOICE_CHANNEL_ID,   guildId: env.GUILD_ID,  selfDeaf: false,    selfMute: false,    adapterCreator: client.channels.cache.get(env.DISCORD_VOICE_CHANNEL_ID).guild.voiceAdapterCreator,  });
-                                        client.channels.cache.get(env.DISCORD_BOTSPAM_ID).send('Online!');
                                         client.logger.info(colors.bold(colors.green('Voice Event executed ...')));
                                     } catch (error) { 
                                         console.log(error);
