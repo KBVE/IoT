@@ -40,7 +40,7 @@ class FundCommand extends Command {
     
     
  // https://github.com/KBVE/archive/blob/main/nodejs/_function/_axios_post.js   
-    async _post(url,data) {     let resp;   try {   resp = await axios.post(url,data);  } catch (err) {     return Promise.reject(err);   }     return resp;    };
+    async _post(url,data) {     let resp;   try {   resp = await axios.post(url,data);  } catch (err) {     return Promise.reject(err);   }     return Promise.resolve(resp);    };
 
     // Transactions 
     // https://github.com/flash-oss/medici
@@ -253,84 +253,17 @@ class FundCommand extends Command {
                                 `);
                         await interaction.editReply({ embeds: [embed] });           
                 break;
-            case 'coinlib': 
-                embed.setColor(0x57f287).setDescription(`📈 Crypto Lib`);    
+            case 'nfc': 
+                embed.setColor(0x57f287).setDescription(`NFC`);
+                const _nfc_command = interaction.options.getString('nfc');    
                 
                 const image = await nodeHtmlToImage({
-                    quality: 100,
-                    type: 'png',
-                    waitUntil: 'load',
-                    html: `
-                             <!DOCTYPE html>
-                                <html lang="en">
-                                <head>
-                                    <meta charset="UTF-8" />
-                                    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                                    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-                                    <style>
-                                    body {
-                                        font-family: "Poppins", Arial, Helvetica, sans-serif;
-                                        background: rgb(22, 22, 22);
-                                        color: #fff;
-                                        max-width: 300px;
-                                    }
-
-                                    .app {
-                                        max-width: 300px;
-                                        padding: 20px;
-                                        display: flex;
-                                        flex-direction: row;
-                                        border-top: 3px solid rgb(16, 180, 209);
-                                        background: rgb(31, 31, 31);
-                                        align-items: center;
-                                    }
-
-                                    img {
-                                        width: 50px;
-                                        height: 50px;
-                                        margin-right: 20px;
-                                        border-radius: 50%;
-                                        border: 1px solid #fff;
-                                        padding: 5px;
-                                    }
-                                    </style>
-                                </head>
-                                <body>
-                                    <div class="app">
-                                    <div style="height:560px; background-color: #1D2330; overflow:hidden; box-sizing: border-box; border: 1px solid #282E3B; border-radius: 4px; text-align: right; line-height:14px; font-size: 12px; font-feature-settings: normal; text-size-adjust: 100%; box-shadow: inset 0 -20px 0 0 #262B38;padding:1px;padding: 0px; margin: 0px; width: 100%;"><div style="height:540px; padding:0px; margin:0px; width: 100%;"><iframe src="https://widget.coinlib.io/widget?type=chart&theme=dark&coin_id=859&pref_coin_id=1505" width="100%" height="536px" scrolling="auto" marginwidth="0" marginheight="0" frameborder="0" border="0" style="border:0;margin:0;padding:0;line-height:14px;"></iframe></div><div style="color: #626B7F; line-height: 14px; font-weight: 400; font-size: 11px; box-sizing: border-box; padding: 2px 6px; width: 100%; font-family: Verdana, Tahoma, Arial, sans-serif;"><a href="https://coinlib.io" target="_blank" style="font-weight: 500; color: #626B7F; text-decoration:none; font-size:11px">Cryptocurrency Prices</a>&nbsp;by Coinlib</div></div>
-                                    </div>
-                                </body>
-                                </html>
-                    `
+                    quality: 100,   type: 'png',    waitUntil: 'load',
+                    html: `<iframe src="https://kbve.com/nfc/3/coinlib/" style="border:none;" title="coinlib"></iframe>`
                 });
                 const _chart = new MessageAttachment(image, 'meme.png');
                 
-                //bonus.setColor(0x57f287).setImage('attachment://meme.png');
-                await interaction.editReply({ 
-                    embeds: [embed,bonus],
-                    files: [_chart]
-                    });    
-                break;
-
-
-            case 'api': 
-                embed.setColor(0x57f287).setDescription(`API Call`);    
-
-                // API 
-                // Two ways that we can do this, via Axios or via Fetch.
-                // Going to continue development on the slave-node-3 and slave-node-4, then repo for next update.
-                const api_image = await nodeHtmlToImage({
-                    quality: 100,
-                    type: 'png',
-                    waitUntil: 'load',
-                    html: ``
-                });
-                const api_chart = new MessageAttachment(api_image, 'meme.png');
-            
-                await interaction.editReply({ 
-                    embeds: [embed,bonus],
-                    files: [api_chart]
-                    });    
+                await interaction.editReply({   embeds: [embed,bonus],  files: [_chart]     });    
                 break;
              
             
