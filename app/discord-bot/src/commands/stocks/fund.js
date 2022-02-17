@@ -209,7 +209,7 @@ class FundCommand extends Command {
                 \n 💰 RustyClan Lannister Debt $: ${data.results[0].unsettled_debit} 
                 \n 🐖 Piggy Pending Pank $: ${data.results[0].cash_held_for_orders} 
                 \n ❤️‍🔥 Cash Held $: ${data.results[0].cash_held_for_options_collateral}  
-                \n 🪙 Crypto ₿uyin Power $: ${data.results[0].crypto_buying_power} `);
+                \n 🪙 Crypto ₿uying Power $: ${data.results[0].crypto_buying_power} `);
 
                 if( Math.random() < 0.1 ) { bonus   .setColor(0x0000FF)  .setDescription(` InterGalatic Banking Clan, \n with the partnership of the Iron Bank of Braavos, \n thanks you for your service against *Black* Crack *Rock* Cocks.`);    }
 
@@ -255,25 +255,13 @@ class FundCommand extends Command {
                 break;
             case 'nfc': 
                 embed.setColor(0x57f287).setDescription(`NFC`);
-                const _nfc_command = interaction.options.getString('nfc');    
-                
-                const image = await nodeHtmlToImage({
-                    quality: 100,   type: 'png',    waitUntil: 'load',
-                    html: `<iframe src="https://kbve.com/nfc/3/coinlib/" style="border:none;" title="coinlib"></iframe>`
-                });
+                const _nfc_command = interaction.options.getString('loc');    let _nfc = _nfc_command.replace(/[^A-Za-z0-9]/g, '');
+                const image = await nodeHtmlToImage({   quality: 100,   type: 'png',    waitUntil: 'load',  html: `<iframe src="https://kbve.com/nfc/3/${_nfc}/" style="border:none;" title=""></iframe>`   });
                 const _chart = new MessageAttachment(image, 'meme.png');
-                
                 await interaction.editReply({   embeds: [embed,bonus],  files: [_chart]     });    
                 break;
-             
             
             default:
-                //_[DEAD]
-                //timer.start();
-                //await Promise.all(
-                //    this.container.stores.map(store => store.loadAll())
-                //);
-                //[DEAD]_
                 embed
                 .setColor(0x57f287)
                 .setDescription(`- No Type -`);
@@ -342,8 +330,14 @@ class FundCommand extends Command {
             )
             .addSubcommand(subcommand =>
                 subcommand
-                    .setName('coinlib')
-                    .setDescription('Coinlib')
+                    .setName('nfc')
+                    .setDescription('NFC')
+                    .addStringOption(option =>
+                        option
+                            .setName('loc')
+                            .setDescription('NFC Location') 
+                            .setRequired(true)
+                    )
             )
             .addSubcommand(subcommand =>
                 subcommand

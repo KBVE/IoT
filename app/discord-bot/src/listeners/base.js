@@ -25,9 +25,13 @@ class BaseEvent extends Listener {
                             async  btc_title()              {   let price;  try {   price = await this.btc_price(); } catch (error) {   this._bad(`[BTC Event]->[Grab Price] failed ... \n ${error}`);   }        this.discord_title(` KBVE | BTC $${price} USD`);  }
                     
                             async run()                     {
-                                            try {   this.btc_title();  this._good('[Ticker]  executed ...');  } catch (error) {       this._bad(`[BTC Event failed] ... \n ${error}`);    }
-                                            await new Promise(r => setTimeout(r, 30000));
-                                            this.run(); 
+                                            //try {   this.btc_title();  this._good('[Ticker]  executed ...');  } catch (error) {       this._bad(`[BTC Event failed] ... \n ${error}`);    }
+                                            //await new Promise(r => setTimeout(r, 30000));
+                                            //this.run();
+                                            let __date;
+                                            __date = +new Date;
+                                            try {   this.discord_title(`KBVE.com | v${__date}`);  this._good('[Title]  executed ...');  } catch (error) {       this._bad(`[Title] failed ... \n ${error}`);    }
+                                            
                             }
 
                 
