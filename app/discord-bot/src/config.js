@@ -9,6 +9,12 @@ const env = cleanEnv(process.env, {
     GUILD_ID: str({
         desc: 'The ID of the guild to use for development (slash commands are updated instantly for this guild)'
     }),
+    DISCORD_HTTP_PORT: str({
+        desc: 'The PORT of the Base Command to use for abstract commands'
+    }),
+    DISCORD_HTTP_API: str({
+        desc: 'The API location of the Base Command to use for anstract commands ()'
+    }),
     DISCORD_VOICE_CHANNEL_ID: str({
         desc: 'The ID of the Voice Channel to use for music and voice commands ()'
     }),

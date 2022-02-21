@@ -28,11 +28,17 @@ class BaseEvent extends Listener {
                                             //try {   this.btc_title();  this._good('[Ticker]  executed ...');  } catch (error) {       this._bad(`[BTC Event failed] ... \n ${error}`);    }
                                             //await new Promise(r => setTimeout(r, 30000));
                                             //this.run();
-                                            let __date;
-                                            __date = +new Date;
+                                            let __date; __date = +new Date;
                                             try {   this.discord_title(`KBVE.com | v${__date}`);  this._good('[Title]  executed ...');  } catch (error) {       this._bad(`[Title] failed ... \n ${error}`);    }
-                                            
-                            }
+                                            let _command; 
+                                                try {
+                                                   _command = this.container.applicationCommandRegistries.acquire('funds').command;
+                                                   //this._good(_command);
+                                                   console.log(_command);
+                                                } catch (error) {   this._bad(`[Base Event] Failed \n ${error}`);   }          
+                                        }
+                    
+                            
 
                 
                 
