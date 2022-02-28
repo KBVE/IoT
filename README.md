@@ -8,6 +8,10 @@ Oh man the amount of resources / credits that I will have to go.
 
 Logs: I will go back and update them as I get time.
 
+2/21/2022
+- Addition of Cyclon and Johny Five
+
+
 1/32/2022
 - Conradical#4688 For the Memes.
 

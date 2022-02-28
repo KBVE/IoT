@@ -9,9 +9,7 @@ const bodyParser = require('koa-bodyparser');
 const colors = require('colorette');
 
 class TwitchEvent extends Listener {
-    constructor(context, options) {
-        super(context, { ...options, once: true, event: `ready` });
-    }
+    constructor(context, options) {     super(context, { ...options, once: true, event: `ready` });     }
 
 
     //https://github.com/KBVE/archive/blob/main/nodejs/_function/_discord_sapphire_ilogger.js
@@ -60,6 +58,5 @@ class TwitchEvent extends Listener {
         }
 }
 
-module.exports = {
-    TwitchEvent
-};
+module.exports = {  TwitchEvent };
+ 

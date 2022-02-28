@@ -23,22 +23,8 @@ const axios = require('axios');
 class FundCommand extends Command {
 
 //  Constructor - Fund Concept 
-    constructor(context, options) {
-        super(context, {
-            ...options,
-            name: 'fund',
-            description: 'KBVE Fund Bot',
-            chatInputCommand: {
-                register: true,
-                behaviorWhenNotIdentical: RegisterBehavior.Overwrite,
-                guildIds: [process.env.GUILD_ID],
-                idHints: ['']
-            }
-        });
-    }
+    constructor(context, options) {   super(context, {    ...options,     name: 'fund',   description: 'KBVE Fund Bot',   chatInputCommand: {     register: true,     behaviorWhenNotIdentical: RegisterBehavior.Overwrite,   guildIds: [process.env.GUILD_ID],   idHints: ['']   }   });     }
 
-    
-    
  // https://github.com/KBVE/archive/blob/main/nodejs/_function/_axios_post.js   
     async _post(url,data) {     let resp;   try {   resp = await axios.post(url,data);  } catch (err) {     return Promise.reject(err);   }     return Promise.resolve(resp);    };
 

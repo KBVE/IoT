@@ -24,6 +24,12 @@ const env = cleanEnv(process.env, {
     DISCORD_TWITCH_RELAY_CHANNEL: str({
         desc: 'The Discord <-> Twitch Relay Channel'
     }),
+    ROBINHOOD_HTTP_PORT: str({
+        desc: 'The PORT of the Base Command to use for abstract commands'
+    }),
+    ROBINHOOD_HTTP_API: str({
+        desc: 'The API location of the Base Command to use for anstract commands ()'
+    }),
     ROBINHOOD_TOKEN: str({
         desc: 'The Token of the Robinhood Account'
     }),
