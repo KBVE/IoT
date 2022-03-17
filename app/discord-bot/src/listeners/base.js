@@ -33,9 +33,9 @@ class BaseEvent extends Listener {
                                             //let _command_mod;
                                             try {
                                                     //_command_mod = new Collection().concat(...this.container.stores.values()).filter((piece => !piece.location.full.includes('node_modules')) && (piece => piece.location.full.includes('fund.js')));
-                                                    let _command_base = new Collection().concat(...this.container.stores.values()).filter((piece => !piece.location.full.includes('node_modules')) && (piece => piece.location.full.includes('fund.js')) );
-                                                    let _command_mod =  JSON.parse(JSON.stringify(_command_base))[0].location.full;
-                                                    console.log(_c);
+                                                    //let _command_base = new Collection().concat(...this.container.stores.values()).filter((piece => !piece.location.full.includes('node_modules')) && (piece => piece.location.full.includes('fund.js')) );
+                                                    //let _command_mod =  JSON.parse(JSON.stringify(_command_base))[0].location.full;
+                                                    //console.log(_c);
                                                     //await new Promise(r => setTimeout(r, 10000));
                                                     //this._good(`Command was found!`);
                                                     //console.log(_command_mod);

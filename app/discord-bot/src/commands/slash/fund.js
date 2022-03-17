@@ -1,20 +1,13 @@
-//Command / Register Behavior from Sapphire Framework
-const { Command, RegisterBehavior } = require('@sapphire/framework');
-// Slash Command Builder
-const { SlashCommandBuilder } = require('@discordjs/builders');
-// Stopwatch
-const { Stopwatch } = require('@sapphire/stopwatch');
-// Message
-const { Collection , MessageEmbed, MessageAttachment } = require('discord.js');
-// Env
-const { env } = require('../.././config');
-// Robinhood
-const rh  = require('robinhood');
-const { Body } = require('node-fetch');
-// Node HTML to Image
-const nodeHtmlToImage = require('node-html-to-image');
-// Axios 
-const axios = require('axios');
+const { Command, RegisterBehavior } = require('@sapphire/framework');                   //  Command / Register Behavior from Sapphire Framework
+const { SlashCommandBuilder } = require('@discordjs/builders');                         //  SlashCommander
+const { Stopwatch } = require('@sapphire/stopwatch');                                   //  Stopwatch
+const { Collection , MessageEmbed, MessageAttachment } = require('discord.js');         //  Discord.js
+const { env } = require('../.././config');                                              //  Env
+const rh  = require('robinhood');                                                       //  RH
+const { Body } = require('node-fetch');                                                 //  Body
+const nodeHtmlToImage = require('node-html-to-image');                                  //  Node HTML to Image
+const axios = require('axios');                                                         //  Axios 
+const colors = require('colorette');                                                    //  Colorette
 
 
 
@@ -25,8 +18,13 @@ class FundCommand extends Command {
 //  Constructor - Fund Concept 
     constructor(context, options) {   super(context, {    ...options,     name: 'fund',   description: 'KBVE Fund Bot',   chatInputCommand: {     register: true,     behaviorWhenNotIdentical: RegisterBehavior.Overwrite,   guildIds: [process.env.GUILD_ID],   idHints: ['']   }   });     }
 
- // https://github.com/KBVE/archive/blob/main/nodejs/_function/_axios_post.js   
+// https://github.com/KBVE/archive/blob/main/nodejs/_function/_axios_post.js   
     async _post(url,data) {     let resp;   try {   resp = await axios.post(url,data);  } catch (err) {     return Promise.reject(err);   }     return Promise.resolve(resp);    };
+
+
+// https://github.com/KBVE/archive/blob/main/nodejs/_function/_discord_sapphire_ilogger.js 
+    async _good(_log)               {   const { client } = this.container;  client.logger.info(colors.bold(colors.green(`${_log}`)));}
+    async _bad(_log)                {   const { client } = this.container;  client.logger.error(colors.bold(colors.red(`${_log}`)));}
 
     // Transactions 
     // https://github.com/flash-oss/medici
@@ -153,43 +151,35 @@ class FundCommand extends Command {
 
 
                     // TO-DO: Move the trade execution from within this application and migrate towards an isolated environment.
-                    let buy_data = await this._rh_buy(_ticker, _url, _price, _shares);
+                    let buy_data;   try { 
+                        buy_data = await this._rh_buy(_ticker, _url, _price, _shares); 
+                        console.log(buy_data);
+                        bonus.setColor(0x0000FF).setDescription(`Trade Block    \n Data: \n Stock Price Execution: ${buy_data.price}    \n Shares: ${buy_data.quantity} \n Object: ${buy_data.instrument_id}`);
+                    } catch (error) {       this._bad(`[Fund] Buy Data failed ... \n ${error}`); bonus.setColor(0xFF0000).setDescription(`Data Firewall`)   }
 
-                    console.log(buy_data);
+                    // RELOAD   /reload all
+                    // TEST CASES:
+                    //  /fund buy stock:$STAG amount:1 
+                    //  /fund buy stock:$O amount:1 
 
-
-
-
-                embed
-                .setColor(0x57f287)
-                .setDescription(`📈 Buying Stock: ${stock} Ticker\n💸 Amount: ${amount} credits \n  Share Units: ${_shares} \n `);
-
-                bonus
-                .setColor(0x0000FF)
-                .setDescription(`Trade Block
-                \n Data:
-                \n Stock Price Execution: ${buy_data.results[0].price}               
-                \n Shares: ${buy_data.result[0].quantity}
-                \n Object: ${buy_data.result[0].instrument_id}
-                `)
+                embed.setColor(0x57f287).setDescription(`📈 Buying Stock: ${stock} Ticker\n💸 Amount: ${amount} credits \n  Share Units: ${_shares} \n `);
                 await interaction.editReply({ embeds: [embed,bonus] });            
                 break; 
             //
             case 'igbc':
 
-                let data = await this._rh_fund_data();
-                    if(typeof data.detail !== 'undefined') {
-                        embed
-                            .setColor(0xFF0000)
-                            .setDescription(`Error: ${data.detail}`);
+                let data;   try { data = await this._rh_fund_data(); } catch (error) {       this._bad(`[Fund] IGBC failed ... \n ${error}`);    }
+                 
+                // DANGEROUS ! WARNING ! REMOVE AS NEEDED ! 
+                if(typeof data.detail !== 'undefined') {
+                        embed.setColor(0xFF0000).setDescription(`Error: ${data.detail}`);
                         await interaction.editReply({ embeds: [embed] });            
                         break;  
                     }
+                //  END DANGER
+            
 
-                //console.log(data);
-
-                embed
-                .setColor(0x57f287)
+                embed.setColor(0x57f287)
                 .setDescription(`📈 KBVE Fund \n Margin $: ${data.results[0].cash} USD
                 \n 💸 Cash $: ${data.results[0].cash_available_for_withdrawal} USD 
                 \n 💰 RustyClan Lannister Debt $: ${data.results[0].unsettled_debit} 
@@ -200,10 +190,8 @@ class FundCommand extends Command {
                 if( Math.random() < 0.1 ) { bonus   .setColor(0x0000FF)  .setDescription(` InterGalatic Banking Clan, \n with the partnership of the Iron Bank of Braavos, \n thanks you for your service against *Black* Crack *Rock* Cocks.`);    }
 
                 await interaction.editReply(    { embeds: [embed,bonus] }   );            
-
-
                 break;
-            ///\
+
             case 'stock':
                 const _stock = interaction.options.getString('stock');
                 const _pticker = _stock.replaceAll('$','').substr(0, 5);
@@ -239,14 +227,7 @@ class FundCommand extends Command {
                                 `);
                         await interaction.editReply({ embeds: [embed] });           
                 break;
-            case 'nfc': 
-                embed.setColor(0x57f287).setDescription(`NFC`);
-                const _nfc_command = interaction.options.getString('loc');    let _nfc = _nfc_command.replace(/[^A-Za-z0-9]/g, '');
-                const image = await nodeHtmlToImage({   quality: 100,   type: 'png',    waitUntil: 'load',  html: `<iframe src="https://kbve.com/nfc/3/${_nfc}/" style="border:none;" title=""></iframe>`   });
-                const _chart = new MessageAttachment(image, 'meme.png');
-                await interaction.editReply({   embeds: [embed,bonus],  files: [_chart]     });    
-                break;
-            
+
             default:
                 embed
                 .setColor(0x57f287)

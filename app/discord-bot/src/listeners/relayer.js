@@ -12,7 +12,8 @@ class RelayerEvent extends Listener {
 
     
     // https://github.com/KBVE/archive/blob/main/nodejs/_function/_axios_post.js   
-    async _post(url,data) {     let resp;   try {   resp = await axios.post(url,data);  } catch (err) {     return Promise.reject(err);   }     return resp;    };
+    async _post(url,data) {     let resp;   try {   resp = await axios.post(url,data);  } catch (err) {     return Promise.reject(err);   }     return Promise.resolve(resp);    };
+
 
     async _twitch(vr_author,vr_author_id, vr_message, vr_message_id, vr_channel)   {  
                 let _j_Object = {   username: vr_author,    message: vr_message,    user_id: vr_author_id,  message_id: vr_message_id,  channel_id: vr_channel  };

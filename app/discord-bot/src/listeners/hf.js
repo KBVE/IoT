@@ -35,6 +35,7 @@ class HFEvent extends Listener {
  
     async _rh_fund_data() {         let _rh = await this.robinhood_fund_data();             return await _rh;   } // Async Pass Through Function
 
+    async _rh_fund_data2() {        let _rh; try { _rh = await this.robinhood_fund_data();  return _rh;  } catch(error) { this._bad(error)   }   }
  
     robinhood_data(_ticker)
     {
@@ -73,14 +74,16 @@ class HFEvent extends Listener {
     {   
         const app = new Koa();     let app_router = new router();   app.use(bodyParser());
                 
-        app_router.post('/api/'+env.ROBINHOOD_HTTP_API+'/account', (ctx, next) => {   
-            ctx.body = ctx.request.body; 
-                let data;  try {    data    =   await this._rh_fund_data();   }  catch (error) {     this._bad(error);   };
+        app_router.all('/api/rh/account', (ctx, next) => {   
+           
+            ctx.body = ctx.request.body;   console.log(ctx.body);
+            let data;  try {    data    =   await this._rh_fund_data2();   }  catch (error) {     this._bad(error);   };
+
 
                     //twitchClient.say(env.TWITCH_CHANNEL, `[Discord@${ctx.body.username}] ${ctx.body.message}`);   
         });
         app.use(app_router.routes()).use(app_router.allowedMethods());
-        const http_app = app.listen(env.TWITCH_HTTP_API_PORT,   ()  =>  {           this._good(`Twitch API Server listening on port: ${env.TWITCH_HTTP_API_PORT}`);        });
+        const http_app = app.listen(env.ROBINHOOD_HTTP_PORT,   ()  =>  {           this._good(`RH API Server listening on port: ${env.ROBINHOOD_HTTP_PORT}`);        });
 
     }
 
